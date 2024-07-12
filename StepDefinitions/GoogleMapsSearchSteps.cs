@@ -6,6 +6,12 @@ using AventStack.ExtentReports.Gherkin.Model;
 using static System.Net.Mime.MediaTypeNames;
 using RazorEngine;
 using System.Net;
+/*
+This file provides the executable definitions for all the steps outlined in the feature file. 
+It integrates the feature steps with the Gherkin syntax using Given, When, Then, and And keywords. 
+It performs assertions to validate the output against the expected results.*/
+
+
 
 namespace GoogleMapTest.StepDefinitions
 {
@@ -13,30 +19,29 @@ namespace GoogleMapTest.StepDefinitions
     public sealed class GoogleMapsSearchSteps
     {
         private IWebDriver driver;
-
         GoogleMapsSearchPage googleMapsSearchPage;
 
 
-    public GoogleMapsSearchSteps(IWebDriver driver)
-    {
-        this.driver = driver;
-    }
+        public GoogleMapsSearchSteps(IWebDriver driver)
+        {
+            this.driver = driver;
+        }
 
-    [Given(@"I am on the Google Maps page")]
+
+        [Given(@"I am on the Google Maps page")]
         public void GivenIAmOnTheGoogleMapsPage()
         {
             googleMapsSearchPage = new GoogleMapsSearchPage(driver);
             googleMapsSearchPage.Navigate();
         }
 
-       
+
         [Given(@"I am on the Google Maps page with language ""([^""]*)""")]
         public void GivenIAmOnTheGoogleMapsPageWithLanguage(string language)
         {
             googleMapsSearchPage = new GoogleMapsSearchPage(driver);
             googleMapsSearchPage.NavigateAsPerLang(language);
         }
-
 
         [When(@"I search for ""(.*)"" on map")]
         public void WhenISearchFor(string address)
@@ -48,7 +53,7 @@ namespace GoogleMapTest.StepDefinitions
         [When(@"I enter invalid ""([^""]*)"" on map")]
         public void WhenIEnterInvalidOnMap(string coordinates)
         {
-            Thread.Sleep(10000);
+            Thread.Sleep(5000);
             googleMapsSearchPage.SearchForAddress(coordinates);
         }
 
@@ -56,8 +61,8 @@ namespace GoogleMapTest.StepDefinitions
         [Then(@"The application should locate ""(.*)"" on map")]
         public void ThenTheApplicationShouldLocateOnMap(string location)
         {
-            Assert.IsTrue(googleMapsSearchPage.IsCenteredOnLocation(location)); 
-                }
+            Assert.IsTrue(googleMapsSearchPage.IsCenteredOnLocation(location));
+        }
 
 
 
@@ -71,8 +76,8 @@ namespace GoogleMapTest.StepDefinitions
         [Then(@"the page should be displayed in ""(.*)""")]
         public void ThenThePageShouldBeDisplayedIn(string expectedLanguage)
         {
-            //Assert.AreEqual(expectedLanguage, googleMapsSearchPage.GetPageLanguage());
-            }
+            Assert.AreEqual(expectedLanguage, googleMapsSearchPage.GetPageLanguage());
+        }
 
 
         [When(@"I get directions from ""([^""]*)"" to ""([^""]*)""")]
@@ -86,14 +91,14 @@ namespace GoogleMapTest.StepDefinitions
         {
 
             Assert.IsTrue(googleMapsSearchPage.AreDirectionsDisplayedCorrectly());
-           
+
         }
 
         [Then(@"The application should correctly locate ""([^""]*)"" on map")]
         public void ThenTheApplicationShouldCorrectlyLocateOnMap(string p0)
         {
-            Thread.Sleep(10000);
-            Assert.IsTrue(googleMapsSearchPage.IsCenteredOnUpdatedLocation(p0));
+            Thread.Sleep(5000);
+            Assert.IsTrue(googleMapsSearchPage.IsCenteredOnLocation(p0));
         }
 
 
