@@ -9,6 +9,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 
+
+/*This file includes the layout ,design and formation code for the extent report, 
+ * as well as the code for capturing screenshots.
+
+*/
 namespace GoogleMapTest.Utility
 {
     public class ExtentReport

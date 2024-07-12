@@ -11,13 +11,22 @@ using TechTalk.SpecFlow;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
 
+
+/*This file performs essential post-build activities, including:
+Capturing screenshots for any failed steps and attaching them to the extent report.
+Initiating an extent report at the start of test case execution.
+Performing operations based on 'before' and 'after' hooks for features and scenarios as required.
+It allows you to select and launch any browser from the provided options
+*/
+
+
 namespace GoogleMapTest.Hooks
 {
     [Binding]
     public sealed class Hooks : ExtentReport
     {
         private readonly IObjectContainer _container;
-       
+
         public Hooks(IObjectContainer container)
         {
             _container = container;
@@ -29,7 +38,7 @@ namespace GoogleMapTest.Hooks
             Console.WriteLine("Running before test run...");
             ExtentReportInit();
         }
-        
+
 
         [AfterTestRun]
         public static void AfterTestRun()
@@ -51,16 +60,16 @@ namespace GoogleMapTest.Hooks
             Console.WriteLine("Running after feature...");
         }
 
-        
-      
+
+
         [BeforeScenario(Order = 1)]
         public void FirstBeforeScenario(ScenarioContext scenarioContext)
         {
 
-                IWebDriver driver;
+            IWebDriver driver;
 
-                // Change the browser type here to switch between browsers
-                string browserType = "chrome"; // can be "chrome", "firefox", "edge"
+            // Change the browser type here to switch between browsers
+            string browserType = "chrome"; // can be "chrome", "firefox", "edge"
 
             switch (browserType.ToLower())
             {
@@ -79,7 +88,7 @@ namespace GoogleMapTest.Hooks
             driver.Manage().Window.Maximize();
             _container.RegisterInstanceAs<IWebDriver>(driver);
             _scenario = _feature.CreateNode<Scenario>(scenarioContext.ScenarioInfo.Title);
-           
+
         }
 
         [AfterScenario]
@@ -100,7 +109,7 @@ namespace GoogleMapTest.Hooks
             string stepType = scenarioContext.StepContext.StepInfo.StepDefinitionType.ToString();
             string stepName = scenarioContext.StepContext.StepInfo.Text;
 
-           var driver = _container.Resolve<IWebDriver>();
+            var driver = _container.Resolve<IWebDriver>();
 
             //When scenario passed
             if (scenarioContext.TestError == null)
